@@ -1,0 +1,32 @@
+.tasks-layout{
+  display: flex;
+}
+.task-type-container{
+  width: 33%;
+  padding: 5px;
+}
+.task-type-title{
+  text-align: center;
+}
+.task-list{
+  border:1px solid grey;
+  padding: 5px;
+}
+.add-another-task{
+  cursor: pointer;
+}
+.another-task-container{
+  border:2px solid black;
+  padding: 4px;
+}
+
+.story-edit-container{
+  display: flex;
+  flex-direction: column;
+  border: 2px solid grey;
+  padding : 10px;
+  margin-bottom: 10px;
+}
+.story-edit-container >  *{
+  margin: 10px;
+}
