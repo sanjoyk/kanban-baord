@@ -25,7 +25,7 @@ class Task {
     return this.renderDetails();
   }
   renderDetails() {
-    return `<div>
+    return `<div class="task-details">
     <p>${this.description}</p>
     <p>${this.date}</p>
     <p>${this.assignee}</p>
@@ -82,17 +82,17 @@ class TaskType {
   }
 
   addTask(taskId) {
-    this.taskIds = [...this.taskIds, taskId];
+    this.taskIds = [...this.taskIds, taskId].filter(onlyUnique);
   }
 
   removeTask(taskId) {
-    this.taskIds = this.taskIds.filter(id => id !== taskId);
+    this.taskIds = this.taskIds.filter(id => id != taskId);
   }
   addEditingTask(id) {
     this.editingTask = [...this.editingTask, id]
   }
   removeEditingTask(id) {
-    this.editingTask = this.editingTask.filter(eId => eId !== id);
+    this.editingTask = this.editingTask.filter(eId => eId != id);
   }
 
   render(tasks) {
@@ -106,8 +106,12 @@ class TaskType {
   }
   renderIndividualTask(tasks) {
     return this.taskIds.map(taskId => {
-      let t = tasks.tasks.filter(taskDetails => taskDetails.id === taskId);
-      return t[0].render();
+      let t = tasks.tasks.filter(taskDetails => taskDetails.id == taskId);
+      if (t.length > 0) {
+        return t[0].render();
+
+      }
+      return "";
     })
       .join("");
   }
@@ -163,7 +167,23 @@ class TaskManager {
     const assignee = formElems[2].value;
     const state = formElems[3].value;
     const tasks = this.taskLists.tasks.filter(task => task.id == taskId);
-    tasks[0].updateTask({ description, date, assignee, state });
+
+    tasks.length > 0 && tasks[0].updateTask({ description, date, assignee, state });
+    debugger
+    if (state === TaskTypes.PLANNED) {
+      this.plannedTasks.addTask(taskId);
+      this.startedTasks.removeTask(taskId);
+      this.doneTasks.removeTask(taskId);
+
+    } else if (state === TaskTypes.STARTED) {
+      this.plannedTasks.removeTask(taskId);
+      this.startedTasks.addTask(taskId);
+      this.doneTasks.removeTask(taskId);
+    } else {
+      this.plannedTasks.removeTask(taskId);
+      this.startedTasks.removeTask(taskId);
+      this.doneTasks.addTask(taskId);
+    }
 
 
 

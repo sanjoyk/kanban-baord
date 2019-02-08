@@ -30,3 +30,9 @@
 .story-edit-container >  *{
   margin: 10px;
 }
+
+.task-details{
+  border:1px solid grey;
+  padding: 10px;
+  margin: 10px;
+}
